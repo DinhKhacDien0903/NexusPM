@@ -5,6 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Remove="E:\NexusPM\stylecop.json" />
+  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.15.0" />

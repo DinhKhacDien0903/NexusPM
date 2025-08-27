@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NexusPM.Domain;
-internal class GlobalUsing
-{
-}
+﻿#pragma warning disable SA1200 // Using directives should be placed correctly
+global using System.ComponentModel.DataAnnotations;
+global using NexusPM.Domain.Common;
+#pragma warning restore SA1200 // Using directives should be placed correctly
