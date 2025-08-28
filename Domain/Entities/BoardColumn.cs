@@ -11,6 +11,5 @@ public class BoardColumn : AuditableEntity, ITenantScoped
 
     public int Order { get; set; }
 
-    [MaxLength(80)]
     public string? WipLimitNote { get; set; }
 }

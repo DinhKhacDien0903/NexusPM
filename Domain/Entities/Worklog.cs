@@ -23,6 +23,5 @@ public class Worklog : AuditableEntity, ITenantScoped
 
     public InvoiceLine? InvoiceLine { get; set; }
 
-    [MaxLength(240)]
     public string? Note { get; set; }
 }

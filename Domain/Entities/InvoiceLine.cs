@@ -7,7 +7,6 @@ public class InvoiceLine : AuditableEntity, ITenantScoped
 
     public Invoice? Invoice { get; set; }
 
-    [MaxLength(240)]
     public string Description { get; set; } = default!;
 
     public int QuantityMinutes { get; set; }

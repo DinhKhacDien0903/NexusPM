@@ -1,6 +1,4 @@
 ﻿namespace NexusPM.Domain.Entities;
-using System.Net.Mail;
-
 public class Issue : AuditableEntity, ITenantScoped
 {
     public Guid TenantId { get; set; }
@@ -9,12 +7,10 @@ public class Issue : AuditableEntity, ITenantScoped
 
     public Project? Project { get; set; }
 
-    [MaxLength(30)]
     public string Key { get; set; } = default!;
 
     public int Number { get; set; }
 
-    [MaxLength(240)]
     public string Title { get; set; } = default!;
 
     public string? Description { get; set; }
@@ -42,7 +38,11 @@ public class Issue : AuditableEntity, ITenantScoped
     public DateTime? DueDateUtc { get; set; }
 
     public ICollection<Comment> Comments { get; set; } = [];
+
     public ICollection<Attachment> Attachments { get; set; } = [];
+
     public ICollection<IssueTag> Tags { get; set; } = [];
+
     public ICollection<Worklog> Worklogs { get; set; } = [];
+
 }

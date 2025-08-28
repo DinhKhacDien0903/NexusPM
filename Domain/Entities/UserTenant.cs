@@ -1,7 +1,6 @@
 ﻿namespace NexusPM.Domain.Entities;
-using NexusPM.Domain.Enums;
 
-public class UserTenant
+public class UserTenant : AuditableEntity, ITenantScoped
 {
     public Guid TenantId { get; set; }
 

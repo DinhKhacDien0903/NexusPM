@@ -7,7 +7,6 @@ public class Board : AuditableEntity, ITenantScoped
 
     public Project? Project { get; set; }
 
-    [MaxLength(120)]
     public string Name { get; set; } = default!;
 
     public ICollection<BoardColumn> Columns { get; set; } = [];

@@ -26,10 +26,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\NexusPM.Application.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\Configurations\" />
-    <Folder Include="Data\Interceptors\" />
-    <Folder Include="Identity\" />
-  </ItemGroup>
 </Project>

@@ -1,10 +1,8 @@
 ﻿namespace NexusPM.Domain.Entities;
 public class Plan : AuditableEntity
 {
-    [MaxLength(60)]
     public string Code { get; set; } = default!;
 
-    [MaxLength(160)]
     public string Name { get; set; } = default!;
 
     public string? Description { get; set; }

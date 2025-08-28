@@ -3,7 +3,6 @@ public class Invoice : AuditableEntity, ITenantScoped
 {
     public Guid TenantId { get; set; }
 
-    [MaxLength(40)]
     public string Number { get; set; } = default!;
 
     public DateTime IssuedOnUtc { get; set; } = DateTime.UtcNow;
@@ -17,5 +16,6 @@ public class Invoice : AuditableEntity, ITenantScoped
     public Money Total { get; set; } = new Money(0, "USD");
 
     public ICollection<InvoiceLine> Lines { get; set; } = [];
+
     public ICollection<Payment> Payments { get; set; } = [];
 }

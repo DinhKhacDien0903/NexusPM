@@ -9,10 +9,8 @@ public class Payment : AuditableEntity, ITenantScoped
 
     public Money Amount { get; set; } = new Money(0, "USD");
 
-    [MaxLength(40)]
     public string Provider { get; set; } = "manual";
 
-    [MaxLength(120)]
     public string ProviderRef { get; set; } = default!;
 
     public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
