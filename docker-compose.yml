@@ -1,36 +1,47 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nexuspm-postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DB}
+    ports:
+      - "${PG_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U ${PG_USER} -d ${PG_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   api:
     build:
       context: .
       dockerfile: src/NexusPM.API/Dockerfile
     image: nexuspm-api:dev
     container_name: nexuspm-api
+    env_file:
+      - .env
     environment:
-      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
-      ConnectionStrings__Default: ${CONNECTIONSTRING}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      # Connection string cho DbContext "Default"
+      # ConnectionStrings__Default: ${APP_CS}
+      # ConnectionStrings__Identity: ${IDENTITY_CS}
+
+      # TODO: Change to use .ENV
+      ConnectionStrings__Default:  Host=postgres;Port=5432;Database=nexuspm;Username=nexus;Password=nexuspw
+      ConnectionStrings__Identity: Host=postgres;Port=5432;Database=nexuspm_identity;Username=nexus;Password=nexuspw
     ports:
       - "8080:8080"
     depends_on:
       postgres:
         condition: service_healthy
     restart: unless-stopped
-
-  postgres:
-    image: postgres:16-alpine
-    container_name: nexuspm-postgres
-    environment:
-      POSTGRES_USER: nexus
-      POSTGRES_PASSWORD: nexuspw
-      POSTGRES_DB: nexuspm
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL","pg_isready -U nexus -d nexuspm"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
 
 volumes:
   pgdata:

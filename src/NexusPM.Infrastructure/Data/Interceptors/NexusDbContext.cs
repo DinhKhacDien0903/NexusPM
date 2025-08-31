@@ -1,9 +1,15 @@
 ﻿namespace NexusPM.Infrastructure.Data.Interceptors;
 using System.Reflection;
 
-public class NexusDbContext(DbContextOptions<NexusDbContext> options, ITenantProvider tenantProvider) : DbContext(options)
+public class NexusDbContext(DbContextOptions<NexusDbContext> options, ITenantProvider tenantProvider)
+    : DbContext(options)
 {
     private readonly ITenantProvider _tenantProvider = tenantProvider;
+
+    public NexusDbContext(DbContextOptions<NexusDbContext> options)
+    : this(options, DesignTimeTenantProvider.Instance)
+    {
+    }
 
     public DbSet<Tenant> Tenants => this.Set<Tenant>();
     public DbSet<AppUser> Users => this.Set<AppUser>();
