@@ -27,8 +27,8 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\NexusPM.Application.csproj" />
-    <ProjectReference Include="..\Infrastructure\NexusPM.Infrastructure.csproj" />
+    <ProjectReference Include="..\NexusPM.Application\NexusPM.Application.csproj" />
+    <ProjectReference Include="..\NexusPM.Infrastructure\NexusPM.Infrastructure.csproj" />
   </ItemGroup>
 
 
