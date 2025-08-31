@@ -1,10 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace NexusPM.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using NexusPM.Infrastructure.Identity;
 
-namespace NexusPM.Infrastructure;
-internal class DependencyInjection
+public static class DependencyInjection
 {
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
+        var cs = configuration.GetConnectionString("Default")
+                    ?? Environment.GetEnvironmentVariable("ConnectionStrings__Default");
+
+        services.AddDbContext<ApplicationIdentityDbContext>(
+            option => option.UseNpgsql(cs));
+
+        return services;
+    }
 }

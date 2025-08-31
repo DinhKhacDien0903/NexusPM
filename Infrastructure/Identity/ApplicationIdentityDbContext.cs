@@ -5,5 +5,7 @@ using Microsoft.EntityFrameworkCore;
 public class ApplicationIdentityDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
     public ApplicationIdentityDbContext(DbContextOptions<ApplicationIdentityDbContext> options)
-        : base(options) { }
+        : base(options)
+    {
+    }
 }

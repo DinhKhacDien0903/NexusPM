@@ -1,0 +1,37 @@
+services:
+  api:
+    build:
+      context: ./src
+      dockerfile: NexusPM.API/Dockerfile
+    image: nexuspm-api:dev
+    container_name: nexuspm-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Default: Host=postgres;Port=5432;Database=nexuspm;Username=nexus;Password=nexuspw
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: nexuspm-postgres
+    environment:
+      POSTGRES_USER: nexus
+      POSTGRES_PASSWORD: nexuspw
+      POSTGRES_DB: nexuspm
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U nexus -d nexuspm"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  pgdata:
