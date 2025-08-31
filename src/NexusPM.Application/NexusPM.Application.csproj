@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\NexusPM.Domain.csproj" />
+    <ProjectReference Include="..\NexusPM.Domain\NexusPM.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

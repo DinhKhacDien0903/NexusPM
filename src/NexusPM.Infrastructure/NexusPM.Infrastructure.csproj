@@ -24,6 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\NexusPM.Application.csproj" />
+    <ProjectReference Include="..\NexusPM.Application\NexusPM.Application.csproj" />
   </ItemGroup>
 </Project>

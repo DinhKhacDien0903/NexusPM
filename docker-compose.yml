@@ -1,13 +1,13 @@
 services:
   api:
     build:
-      context: ./src
-      dockerfile: NexusPM.API/Dockerfile
+      context: .
+      dockerfile: src/NexusPM.API/Dockerfile
     image: nexuspm-api:dev
     container_name: nexuspm-api
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Default: Host=postgres;Port=5432;Database=nexuspm;Username=nexus;Password=nexuspw
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__Default: ${CONNECTIONSTRING}
     ports:
       - "8080:8080"
     depends_on:
@@ -31,7 +31,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-    restart: unless-stopped
 
 volumes:
   pgdata:
