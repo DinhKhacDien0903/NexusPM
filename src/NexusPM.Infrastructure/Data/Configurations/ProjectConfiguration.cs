@@ -1,4 +1,12 @@
-﻿namespace NexusPM.Infrastructure.Data.Configurations;
+﻿// <copyright file="ProjectConfiguration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Infrastructure.Data.Configurations;
+
+/// <summary>
+/// Entity Framework configuration for the Project entity, defining database schema and relationships.
+/// </summary>
 public class ProjectConfiguration : IEntityTypeConfiguration<Project>
 {
     public void Configure(EntityTypeBuilder<Project> builder)

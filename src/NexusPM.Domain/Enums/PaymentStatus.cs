@@ -1,4 +1,8 @@
-﻿namespace NexusPM.Domain.Enums;
+﻿// <copyright file="PaymentStatus.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Domain.Enums;
 
 /// <summary>
 /// Represents the status of a payment in the system.

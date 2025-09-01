@@ -1,6 +1,13 @@
-﻿namespace NexusPM.Infrastructure.Data.Configurations;
+﻿// <copyright file="IssueTagConfiguration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Infrastructure.Data.Configurations;
+
+/// <inheritdoc/>
 public class IssueTagConfiguration : IEntityTypeConfiguration<IssueTag>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<IssueTag> builder)
     {
         builder.HasKey(x => new { x.TenantId, x.IssueId, x.TagId });

@@ -1,6 +1,13 @@
-﻿namespace NexusPM.Infrastructure.Data.Configurations;
+﻿// <copyright file="ProjectMemberConfiguration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Infrastructure.Data.Configurations;
+
+/// <inheritdoc/>
 public class ProjectMemberConfiguration : IEntityTypeConfiguration<ProjectMember>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<ProjectMember> builder)
     {
         builder.HasIndex(x => new { x.TenantId, x.ProjectId, x.UserId }).IsUnique();

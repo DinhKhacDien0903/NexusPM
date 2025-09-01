@@ -1,4 +1,8 @@
-﻿namespace NexusPM.Domain.Enums;
+﻿// <copyright file="SprintState.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Domain.Enums;
 
 /// <summary>
 /// Represents the state of a sprint in the project management lifecycle.

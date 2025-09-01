@@ -1,6 +1,13 @@
-﻿namespace NexusPM.Infrastructure.Data.Configurations;
+﻿// <copyright file="PlanConfiguration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Infrastructure.Data.Configurations;
+
+/// <inheritdoc/>
 public class PlanConfiguration : IEntityTypeConfiguration<Plan>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<Plan> builder)
     {
         builder.Property(x => x.Code).HasMaxLength(60).IsRequired();

@@ -1,6 +1,14 @@
-﻿namespace NexusPM.Infrastructure.Data.Configurations;
+﻿// <copyright file="TagConfiguration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Infrastructure.Data.Configurations;
+
+/// <inheritdoc/>
 public class TagConfiguration : IEntityTypeConfiguration<Tag>
 {
+
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<Tag> builder)
     {
         builder.Property(x => x.Name).HasMaxLength(50).IsRequired();

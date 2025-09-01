@@ -1,4 +1,9 @@
-﻿namespace NexusPM.Infrastructure.Boot;
+﻿// <copyright file="MigrationHostedService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Infrastructure.Boot;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +14,9 @@ using NexusPM.Infrastructure.Data.Interceptors;
 using NexusPM.Infrastructure.Helpers;
 using NexusPM.Infrastructure.Identity;
 
+/// <summary>
+/// Hosted service responsible for running database migrations and seeding initial data on application startup.
+/// </summary>
 public class MigrationHostedService : IHostedService
 {
     private readonly IServiceProvider _services;

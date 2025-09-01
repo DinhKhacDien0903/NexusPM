@@ -1,4 +1,12 @@
-﻿namespace NexusPM.Infrastructure.Data.Configurations;
+﻿// <copyright file="AppUserConfiguration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Infrastructure.Data.Configurations;
+
+/// <summary>
+/// Entity Framework configuration for the AppUser entity, defining database schema and relationships.
+/// </summary>
 public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
 {
     public void Configure(EntityTypeBuilder<AppUser> builder)

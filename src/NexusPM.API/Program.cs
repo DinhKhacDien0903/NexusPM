@@ -1,12 +1,20 @@
-using DotNetEnv;
-using NexusPM.API.Hosting;
-using NexusPM.Infrastructure;
-using NexusPM.Infrastructure.Boot;
+// Copyright (c) YourCompany. All rights reserved.
 
 namespace NexusPM.API;
+using DotNetEnv;
+using NexusPM.API.Middlewares;
+using NexusPM.Infrastructure;
 
+/// <summary>
+/// The entry point of the NexusPM.API application.
+/// </summary>
 public class Program
 {
+    /// <summary>
+    /// The main method that serves as the entry point for the application.
+    /// </summary>
+    /// <param name="args">The command-line arguments.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -32,9 +40,9 @@ public class Program
 
         app.UseAuthorization();
 
-        app.MapControllers();
+        app.UseMiddleware<MissingTenantMiddleware>();
 
-        //await app.ApplyMigrationAsync();
+        app.MapControllers();
 
         app.MapGet("/health", () => Results.Ok("OK"));
 

@@ -1,4 +1,8 @@
-﻿namespace NexusPM.Domain.Enums;
+﻿// <copyright file="ProjectRole.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Domain.Enums;
 
 /// <summary>
 /// Represents the roles a user can have in a project.

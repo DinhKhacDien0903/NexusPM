@@ -1,6 +1,13 @@
-﻿namespace NexusPM.Infrastructure.Data.Configurations;
+﻿// <copyright file="CommentConfiguration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Infrastructure.Data.Configurations;
+
+/// <inheritdoc/>
 internal class CommentConfiguration : IEntityTypeConfiguration<Comment>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<Comment> builder)
     {
         builder.Property(x => x.Body).IsRequired();

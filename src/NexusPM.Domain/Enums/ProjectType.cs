@@ -1,4 +1,8 @@
-﻿namespace NexusPM.Domain.Enums;
+﻿// <copyright file="ProjectType.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Domain.Enums;
 
 /// <summary>
 /// Represents the type of project management methodology.

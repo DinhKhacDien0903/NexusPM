@@ -1,6 +1,13 @@
-﻿namespace NexusPM.Infrastructure.Data.Configurations;
+﻿// <copyright file="PaymentConfiguration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Infrastructure.Data.Configurations;
+
+/// <inheritdoc/>
 public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<Payment> builder)
     {
         builder.Property(x => x.Provider).HasMaxLength(40).IsRequired();

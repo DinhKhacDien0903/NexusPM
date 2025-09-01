@@ -1,4 +1,12 @@
-﻿namespace NexusPM.Infrastructure.Data.Configurations;
+﻿// <copyright file="IssueConfiguration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Infrastructure.Data.Configurations;
+
+/// <summary>
+/// Entity Framework configuration for the Issue entity, defining database schema and relationships.
+/// </summary>
 public class IssueConfiguration : IEntityTypeConfiguration<Issue>
 {
     public void Configure(EntityTypeBuilder<Issue> builder)

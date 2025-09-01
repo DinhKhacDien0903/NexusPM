@@ -1,6 +1,13 @@
-﻿namespace NexusPM.Infrastructure.Data.Configurations;
+﻿// <copyright file="InvoiceLineConfiguration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace NexusPM.Infrastructure.Data.Configurations;
+
+/// <inheritdoc/>
 public class InvoiceLineConfiguration : IEntityTypeConfiguration<InvoiceLine>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<InvoiceLine> builder)
     {
         builder.Property(x => x.Description).HasMaxLength(240).IsRequired();

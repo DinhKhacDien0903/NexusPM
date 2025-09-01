@@ -1,7 +1,14 @@
-﻿namespace NexusPM.Infrastructure.Data.Configurations;
+﻿// <copyright file="WorklogConfiguration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
+namespace NexusPM.Infrastructure.Data.Configurations;
+
+/// <inheritdoc/>
 public class WorklogConfiguration : IEntityTypeConfiguration<Worklog>
 {
+
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<Worklog> builder)
     {
         builder.Property(x => x.Note).HasMaxLength(240);
