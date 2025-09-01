@@ -12,7 +12,8 @@ using NexusPM.Domain.Enums;
 using NexusPM.Domain.ValueObjects;
 using NexusPM.Infrastructure.Data.Interceptors;
 using NexusPM.Infrastructure.Helpers;
-using NexusPM.Infrastructure.Identity;
+using NexusPM.Infrastructure.Identity.Configurations;
+using NexusPM.Infrastructure.Identity.Interceptors;
 
 /// <summary>
 /// Hosted service responsible for running database migrations and seeding initial data on application startup.

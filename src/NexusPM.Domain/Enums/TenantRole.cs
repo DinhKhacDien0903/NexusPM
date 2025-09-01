@@ -27,5 +27,5 @@ public enum TenantRole
     /// <summary>
     /// Responsible for billing-related tasks.
     /// </summary>
-    Biling = 3,
+    Billing = 3,
 }

@@ -6,7 +6,7 @@ namespace NexusPM.Infrastructure.Data.Interceptors;
 
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using NexusPM.Infrastructure.Identity;
+using NexusPM.Infrastructure.Identity.Interceptors;
 
 /// <summary>
 /// A factory for creating instances of <see cref="NexusDbContext"/> at design time.

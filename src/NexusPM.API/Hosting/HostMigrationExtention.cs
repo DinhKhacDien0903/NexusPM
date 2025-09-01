@@ -1,7 +1,7 @@
 ﻿// Copyright (c) YourCompany. All rights reserved.
 
 using Microsoft.EntityFrameworkCore;
-using NexusPM.Infrastructure.Identity;
+using NexusPM.Infrastructure.Identity.Interceptors;
 
 namespace NexusPM.API.Hosting;
 

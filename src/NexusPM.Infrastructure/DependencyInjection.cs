@@ -8,7 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using NexusPM.Application.Abstractions;
 using NexusPM.Infrastructure.Data.Interceptors;
 using NexusPM.Infrastructure.Data.Tenancy;
-using NexusPM.Infrastructure.Identity;
+using NexusPM.Infrastructure.Identity.Configurations;
+using NexusPM.Infrastructure.Identity.Interceptors;
 
 /// <summary>
 /// Provides extension methods for configuring infrastructure services.
