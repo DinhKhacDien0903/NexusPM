@@ -108,7 +108,7 @@ public class MigrationHostedService : IHostedService
             db.Plans.AddRange(
                 new Plan { Code = "STARTER", Name = "Starter", PricePerSeatMonthly = new Money(5, "USD"), MaxSeats = 5, MaxProjects = 5, MaxActiveIssues = 100 },
                 new Plan { Code = "PRO", Name = "Pro", PricePerSeatMonthly = new Money(12, "USD"), MaxSeats = 100, MaxProjects = 100, MaxActiveIssues = 10000 },
-                new Plan { Code = "ENT", Name = "Enterprise", PricePerSeatMonthly = new Money(0, "USD") } // Custom pricing  
+                new Plan { Code = "ENT", Name = "Enterprise", PricePerSeatMonthly = new Money(0, "USD") } // Custom pricing
             );
 
             await db.SaveChangesAsync(ct);

@@ -131,6 +131,16 @@ public class NexusDbContext(DbContextOptions<NexusDbContext> options, ITenantPro
     public DbSet<AuditLog> AuditLogs => this.Set<AuditLog>();
 
     /// <summary>
+    /// Gets the refresh tokens.
+    /// </summary>
+    public DbSet<RefreshToken> RefreshTokens => this.Set<RefreshToken>();
+
+    /// <summary>
+    /// Gets the user sessions.
+    /// </summary>
+    public DbSet<UserSession> UserSessions => this.Set<UserSession>();
+
+    /// <summary>
     /// Configures the model for the context by applying entity configurations and query filters.
     /// </summary>
     /// <param name="modelBuilder">The builder being used to construct the model for the context.</param>

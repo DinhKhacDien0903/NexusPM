@@ -21,14 +21,4 @@ public class ApplicationIdentityDbContext : IdentityDbContext<ApplicationUser, A
         : base(options)
     {
     }
-
-    /// <summary>
-    /// Gets the refresh tokens.
-    /// </summary>
-    public DbSet<RefreshToken> RefreshTokens => this.Set<RefreshToken>();
-
-    /// <summary>
-    /// Gets the user sessions.
-    /// </summary>
-    public DbSet<UserSession> UserSessions => this.Set<UserSession>();
 }
