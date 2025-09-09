@@ -13,6 +13,8 @@ using NexusPM.Infrastructure.Data.Interceptors;
 using NexusPM.Infrastructure.Data.Tenancy;
 using NexusPM.Infrastructure.Identity.Configurations;
 using NexusPM.Infrastructure.Identity.Interceptors;
+using NexusPM.Infrastructure.Identity.Services.KeyMaterial;
+using NexusPM.Infrastructure.Identity.Services;
 
 /// <summary>
 /// Provides extension methods for configuring infrastructure services.
@@ -53,6 +55,10 @@ public static class DependencyInjection
         services.AddScoped<ITenantStore, EfTenantStore>();
 
         services.AddScoped<IUserTenantReader, EfUserTenantReader>();
+
+        //services.Configure<JwtOptions>(config.GetSection("Jwt"));
+        services.AddSingleton<IKeyMaterialProvider, InMemoryRsaKeyMaterialProvider>();
+        services.AddScoped<ITokenService, TokenService>();
 
         return services;
     }

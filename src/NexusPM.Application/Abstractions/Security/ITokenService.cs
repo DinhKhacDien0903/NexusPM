@@ -3,7 +3,6 @@
 // </copyright>
 
 namespace NexusPM.Application.Abstractions.Security;
-using NexusPM.Application.Abstractions.Security;
 
 /// <summary>
 /// Defines methods for issuing, refreshing, switching, and revoking tokens for user authentication and authorization.
