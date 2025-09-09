@@ -6,6 +6,8 @@ namespace NexusPM.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NexusPM.Application.Abstractions;
+using NexusPM.Application.Abstractions.Security;
+using NexusPM.Infrastructure.Data.Auth;
 using NexusPM.Infrastructure.Data.Interceptors;
 using NexusPM.Infrastructure.Data.Tenancy;
 using NexusPM.Infrastructure.Identity.Configurations;
@@ -45,6 +47,8 @@ public static class DependencyInjection
             sp => sp.GetRequiredService<RequestTenantContext>());
 
         services.AddScoped<ITenantStore, EfTenantStore>();
+
+        services.AddScoped<IUserTenantReader, EfUserTenantReader>();
 
         return services;
     }

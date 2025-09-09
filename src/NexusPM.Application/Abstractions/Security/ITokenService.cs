@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace NexusPM.Application.Abstractions.Author;
+namespace NexusPM.Application.Abstractions.Security;
 using NexusPM.Application.Abstractions.Security;
 
 /// <summary>
