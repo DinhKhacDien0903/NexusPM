@@ -2,12 +2,10 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace NexusPM.Infrastructure.Identity;
+namespace NexusPM.Infrastructure.Identity.Interceptors;
 
-using DotNetEnv;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using NexusPM.Infrastructure.Helpers;
 
 /// <summary>
 /// Factory for creating ApplicationIdentityDbContext instances at design time, used by EF Core tools for migrations.

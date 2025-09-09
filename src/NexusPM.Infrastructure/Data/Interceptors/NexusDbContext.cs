@@ -138,7 +138,9 @@ public class NexusDbContext(DbContextOptions<NexusDbContext> options, ITenantPro
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            Assembly.GetExecutingAssembly(),
+            type => type.Namespace?.Contains("Data.Configurations") == true);
 
         modelBuilder.Entity<Tenant>().HasQueryFilter(x => !x.IsDeleted);
         modelBuilder.Entity<AppUser>().HasQueryFilter(x => !x.IsDeleted);

@@ -24,7 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
+    <Folder Include="Common\Behaviours\" />
+    <Folder Include="Common\Exceptions\" />
+    <Folder Include="Common\Mappings\" />
+    <Folder Include="Common\Models\" />
     <Folder Include="Features\Commands\" />
     <Folder Include="Features\EventHandlers\" />
     <Folder Include="Features\Queries\" />

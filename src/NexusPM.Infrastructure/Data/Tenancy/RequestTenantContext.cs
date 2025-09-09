@@ -3,6 +3,7 @@
 // </copyright>
 
 namespace NexusPM.Infrastructure.Data.Tenancy;
+
 using NexusPM.Application.Abstractions;
 using InfraTenantProvider = Interceptors.ITenantProvider;
 

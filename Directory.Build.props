@@ -3,6 +3,10 @@
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+	 <WarningsNotAsErrors>NU1901;NU1902;NU1903;NU1904</WarningsNotAsErrors>
+	 <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
+	 <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);IDE0160;SA1633;SA1200</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace NexusPM.Infrastructure.Identity;
+namespace NexusPM.Infrastructure.Identity.Configurations;
 
 using Microsoft.AspNetCore.Identity;
 

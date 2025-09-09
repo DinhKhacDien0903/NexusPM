@@ -12,7 +12,7 @@ using NexusPM.Domain.Enums;
 using NexusPM.Domain.ValueObjects;
 using NexusPM.Infrastructure.Data.Interceptors;
 using NexusPM.Infrastructure.Helpers;
-using NexusPM.Infrastructure.Identity;
+using NexusPM.Infrastructure.Identity.Configurations;
 
 /// <summary>
 /// Hosted service responsible for running database migrations and seeding initial data on application startup.
@@ -34,16 +34,10 @@ public class MigrationHostedService : IHostedService
 
         using var scope = _services.CreateScope();
 
-        // 1) Migrate Identity
-        var identityDb = scope.ServiceProvider.GetRequiredService<ApplicationIdentityDbContext>();
-        await identityDb.Database.MigrateAsync(cancellationToken);
-
         // 2) Migrate Domain (không phụ thuộc tenant khi migrate)
         var domainOptions = scope.ServiceProvider.GetRequiredService<DbContextOptions<NexusDbContext>>();
         await using (var dbNoTenant = new NexusDbContext(domainOptions, new StaticTenantProvider(Guid.Empty)))
         {
-            await dbNoTenant.Database.MigrateAsync(cancellationToken);
-
             // 3) Seed Plans (global) & Tenant nếu chưa có
             await SeedPlansAsync(dbNoTenant, cancellationToken);
 
@@ -107,7 +101,7 @@ public class MigrationHostedService : IHostedService
             db.Plans.AddRange(
                 new Plan { Code = "STARTER", Name = "Starter", PricePerSeatMonthly = new Money(5, "USD"), MaxSeats = 5, MaxProjects = 5, MaxActiveIssues = 100 },
                 new Plan { Code = "PRO", Name = "Pro", PricePerSeatMonthly = new Money(12, "USD"), MaxSeats = 100, MaxProjects = 100, MaxActiveIssues = 10000 },
-                new Plan { Code = "ENT", Name = "Enterprise", PricePerSeatMonthly = new Money(0, "USD") } // Custom pricing  
+                new Plan { Code = "ENT", Name = "Enterprise", PricePerSeatMonthly = new Money(0, "USD") } // Custom pricing
             );
 
             await db.SaveChangesAsync(ct);

@@ -25,7 +25,7 @@ public sealed class MissingTenantMiddleware(RequestDelegate next)
         var tid = await ResolveAsync(ctx, store, ctx.RequestAborted);
         if (tid == Guid.Empty)
         {
-            ctx.Response.StatusCode = StatusCodes.Status404NotFound;
+            ctx.Response.StatusCode = StatusCodes.Status403Forbidden;
             await ctx.Response.WriteAsync("Missing or invalid tenant");
             return;
         }
