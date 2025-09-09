@@ -13,7 +13,6 @@ using NexusPM.Domain.ValueObjects;
 using NexusPM.Infrastructure.Data.Interceptors;
 using NexusPM.Infrastructure.Helpers;
 using NexusPM.Infrastructure.Identity.Configurations;
-using NexusPM.Infrastructure.Identity.Interceptors;
 
 /// <summary>
 /// Hosted service responsible for running database migrations and seeding initial data on application startup.
@@ -35,16 +34,10 @@ public class MigrationHostedService : IHostedService
 
         using var scope = _services.CreateScope();
 
-        // 1) Migrate Identity
-        var identityDb = scope.ServiceProvider.GetRequiredService<ApplicationIdentityDbContext>();
-        await identityDb.Database.MigrateAsync(cancellationToken);
-
         // 2) Migrate Domain (không phụ thuộc tenant khi migrate)
         var domainOptions = scope.ServiceProvider.GetRequiredService<DbContextOptions<NexusDbContext>>();
         await using (var dbNoTenant = new NexusDbContext(domainOptions, new StaticTenantProvider(Guid.Empty)))
         {
-            await dbNoTenant.Database.MigrateAsync(cancellationToken);
-
             // 3) Seed Plans (global) & Tenant nếu chưa có
             await SeedPlansAsync(dbNoTenant, cancellationToken);
 

@@ -131,16 +131,6 @@ public class NexusDbContext(DbContextOptions<NexusDbContext> options, ITenantPro
     public DbSet<AuditLog> AuditLogs => this.Set<AuditLog>();
 
     /// <summary>
-    /// Gets the refresh tokens.
-    /// </summary>
-    public DbSet<RefreshToken> RefreshTokens => this.Set<RefreshToken>();
-
-    /// <summary>
-    /// Gets the user sessions.
-    /// </summary>
-    public DbSet<UserSession> UserSessions => this.Set<UserSession>();
-
-    /// <summary>
     /// Configures the model for the context by applying entity configurations and query filters.
     /// </summary>
     /// <param name="modelBuilder">The builder being used to construct the model for the context.</param>
@@ -148,7 +138,9 @@ public class NexusDbContext(DbContextOptions<NexusDbContext> options, ITenantPro
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            Assembly.GetExecutingAssembly(),
+            type => type.Namespace?.Contains("Data.Configurations") == true);
 
         modelBuilder.Entity<Tenant>().HasQueryFilter(x => !x.IsDeleted);
         modelBuilder.Entity<AppUser>().HasQueryFilter(x => !x.IsDeleted);

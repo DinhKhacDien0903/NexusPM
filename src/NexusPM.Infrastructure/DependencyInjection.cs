@@ -3,6 +3,7 @@
 // </copyright>
 
 namespace NexusPM.Infrastructure;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NexusPM.Application.Abstractions;
@@ -26,14 +27,17 @@ public static class DependencyInjection
     /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        var cs = configuration.GetConnectionString("Default")
-                    ?? Environment.GetEnvironmentVariable("ConnectionStrings__Default");
+        var defaultCs = configuration.GetConnectionString("Default")
+                       ?? Environment.GetEnvironmentVariable("ConnectionStrings__Default");
+
+        var identityCs = configuration.GetConnectionString("Identity")
+                       ?? Environment.GetEnvironmentVariable("ConnectionStrings__Identity");
 
         services.AddDbContext<ApplicationIdentityDbContext>(
-            option => option.UseNpgsql(cs));
+            option => option.UseNpgsql(identityCs));
 
         services.AddDbContext<NexusDbContext>(
-            option => option.UseNpgsql(cs));
+            option => option.UseNpgsql(defaultCs));
 
         services.AddIdentityCore<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
