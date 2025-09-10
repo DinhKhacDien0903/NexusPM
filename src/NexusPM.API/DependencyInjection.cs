@@ -1,7 +1,10 @@
 ﻿// Copyright (c) YourCompany. All rights reserved.
-namespace NexusPM.API;
-
+using Microsoft.AspNetCore.Authorization;
+using NexusPM.API.Authorization;
+using NexusPM.Application.Abstractions.Security;
 using NexusPM.Infrastructure.Boot;
+
+namespace NexusPM.API;
 
 /// <summary>
 /// Provides extension methods for configuring API services.
@@ -16,6 +19,10 @@ public static class DependencyInjection
     public static IServiceCollection AddAPIService(this IServiceCollection services)
     {
         services.AddHostedService<MigrationHostedService>();
+
+        services.AddScoped<ICurrentUser, CurrentUser>();
+
+        services.AddSingleton<IAuthorizationHandler, TenantRoleHandler>();
 
         return services;
     }

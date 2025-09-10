@@ -22,9 +22,10 @@ public class InMemoryRsaKeyMaterialProvider : IKeyMaterialProvider
     {
         this.options = options.Value;
         this.rsa = RSA.Create();
-        if (!string.IsNullOrWhiteSpace(this.options.PrivateKeyPem))
+        var pem = this.options.PrivateKeyPem;
+        if (!string.IsNullOrWhiteSpace(pem))
         {
-            this.rsa.ImportFromPem(this.options.PrivateKeyPem);
+            this.rsa.ImportFromPem(pem);
         }
         else
         {

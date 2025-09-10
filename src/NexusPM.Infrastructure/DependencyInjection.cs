@@ -56,8 +56,15 @@ public static class DependencyInjection
 
         services.AddScoped<IUserTenantReader, EfUserTenantReader>();
 
-        //services.Configure<JwtOptions>(config.GetSection("Jwt"));
+        services.AddOptions<JwtOptions>()
+            .BindConfiguration("Jwt")
+            .Validate(
+                o => !string.IsNullOrWhiteSpace(o.PrivateKeyPem),
+                "Jwt:PrivateKeyPem is required (user-secrets/ENV).")
+            .ValidateOnStart();
+
         services.AddSingleton<IKeyMaterialProvider, InMemoryRsaKeyMaterialProvider>();
+
         services.AddScoped<ITokenService, TokenService>();
 
         return services;
