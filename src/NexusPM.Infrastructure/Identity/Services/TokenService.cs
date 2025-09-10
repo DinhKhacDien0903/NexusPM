@@ -15,20 +15,14 @@ namespace NexusPM.Infrastructure.Identity.Services;
 /// <summary>
 /// Provides functionality for issuing, refreshing, and revoking tokens.
 /// </summary>
-public class TokenService(ApplicationIdentityDbContext db, IUserTenantReader tenantReader, IKeyMaterialProvider keys, IOptions<JwtOptions> options) : ITokenService
+public class TokenService(ApplicationIdentityDbContext db, IUserTenantReader tenantReader, IKeyMaterialProvider keys, IOptions<JwtOptions> options)
+    : ITokenService
 {
     private readonly ApplicationIdentityDbContext db = db;
     private readonly IUserTenantReader tenantReader = tenantReader;
     private readonly JwtOptions opt = options.Value;
     private readonly IKeyMaterialProvider keys = keys;
     private readonly JwtSecurityTokenHandler handler = new ();
-
-    /// <summary>
-    /// Computes the SHA-256 hash of the specified string.
-    /// </summary>
-    /// <param name="s">The input string.</param>
-    /// <returns>The SHA-256 hash as a hexadecimal string.</returns>
-    private static string Sha256(string s) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(s)));
 
     /// <summary>
     /// Issues a new token pair (access and refresh tokens) for the specified user and tenant.
@@ -69,72 +63,6 @@ public class TokenService(ApplicationIdentityDbContext db, IUserTenantReader ten
         await this.db.SaveChangesAsync();
 
         return new TokenPair(access, exp, refresh);
-    }
-
-    /// <summary>
-    /// Creates an access token for the specified user and tenant.
-    /// </summary>
-    /// <param name="userId">The ID of the user.</param>
-    /// <param name="tenantId">The ID of the tenant.</param>
-    /// <param name="requestedRole">The role requested by the user.</param>
-    /// <param name="email">The email of the user.</param>
-    /// <param name="sid">The session ID.</param>
-    /// <returns>A tuple containing the access token, expiration time, JWT ID, and family ID.</returns>
-    private async Task<(string access, DateTime exp, string jti, string family)> CreateAccessTokenAsync(Guid userId, Guid tenantId, string requestedRole, string email, string sid)
-    {
-        var now = DateTime.UtcNow;
-        var exp = now.AddMinutes(this.opt.AccessTokenMinutes);
-        var jti = Guid.NewGuid().ToString("N");
-        var family = Guid.NewGuid().ToString("N");
-
-        var user = await this.db.Users.AsNoTracking().FirstAsync(u => u.Id == userId);
-        var securityStamp = user.SecurityStamp ?? string.Empty;
-
-        var claims = new[]
-        {
-          new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-          new Claim(JwtRegisteredClaimNames.Jti, jti),
-          new Claim(JwtRegisteredClaimNames.Iat, ((DateTimeOffset)now).ToUnixTimeSeconds().ToString(System.Globalization.CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
-          new Claim(JwtRegisteredClaimNames.Email, email),
-          new Claim("tid", tenantId.ToString()),
-          new Claim("trole", requestedRole),
-          new Claim("sid", sid ?? Guid.NewGuid().ToString("N")),
-          new Claim("ver", securityStamp),
-        };
-
-        var signing = await this.keys.GetSigningCredentialsAsync();
-        var jwt = new JwtSecurityToken(this.opt.Issuer, this.opt.Audience, claims, notBefore: now, expires: exp, signingCredentials: signing);
-        var token = this.handler.WriteToken(jwt);
-        return (token, exp, jti, family);
-    }
-
-    /// <summary>
-    /// Creates a refresh token for the specified user and tenant.
-    /// </summary>
-    /// <param name="userId">The ID of the user.</param>
-    /// <param name="tenantId">The ID of the tenant.</param>
-    /// <param name="tenantRole">The role of the user in the tenant.</param>
-    /// <param name="jti">The JWT ID.</param>
-    /// <param name="family">The family ID.</param>
-    /// <returns>The raw refresh token.</returns>
-    private async Task<string> CreateRefreshTokenAsync(Guid userId, Guid tenantId, string tenantRole, string jti, string family)
-    {
-        _ = Enum.TryParse<TenantRole>(tenantRole, out TenantRole parsedRole);
-        var raw = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-        this.db.RefreshTokens.Add(new RefreshToken
-        {
-            UserId = userId,
-            TenantId = tenantId,
-            Role = parsedRole,
-            JwtId = jti,
-            Family = family,
-            TokenHash = Sha256(raw),
-            CreatedAtUtc = DateTime.UtcNow,
-            ExpiresAtUtc = DateTime.UtcNow.AddDays(this.opt.RefreshTokenDays),
-        });
-
-        await this.db.SaveChangesAsync();
-        return raw;
     }
 
     /// <summary>
@@ -182,17 +110,6 @@ public class TokenService(ApplicationIdentityDbContext db, IUserTenantReader ten
 
         await this.db.SaveChangesAsync();
         return new TokenPair(access, exp, newRefresh);
-    }
-
-    /// <summary>
-    /// Revokes all refresh tokens in a specific family.
-    /// </summary>
-    /// <param name="family">The family ID of the refresh tokens to revoke.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    private async Task RevokeFamily(string family)
-    {
-        await this.db.RefreshTokens.Where(x => x.Family == family && x.RevokedAtUtc == null)
-            .ExecuteUpdateAsync(s => s.SetProperty(r => r.RevokedAtUtc, _ => DateTime.UtcNow));
     }
 
     /// <summary>
@@ -248,14 +165,100 @@ public class TokenService(ApplicationIdentityDbContext db, IUserTenantReader ten
         {
             throw new SecurityTokenException("Role mismatch");
         }
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+
         var (access, exp, jti, family) = await this.CreateAccessTokenAsync(userId, ut.TenantId, ut.Role.ToString(), email: null, sid: null);
 
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+
         var refresh = await this.CreateRefreshTokenAsync(userId, ut.TenantId, ut.Role.ToString(), jti, family);
 
         await this.db.SaveChangesAsync();
 
         return new TokenPair(access, exp, refresh);
     }
+
+    /// <summary>
+    /// Revokes all refresh tokens in a specific family.
+    /// </summary>
+    /// <param name="family">The family ID of the refresh tokens to revoke.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    private async Task RevokeFamily(string family)
+    {
+        await this.db.RefreshTokens.Where(x => x.Family == family && x.RevokedAtUtc == null)
+            .ExecuteUpdateAsync(s => s.SetProperty(r => r.RevokedAtUtc, _ => DateTime.UtcNow));
+    }
+
+    /// <summary>
+    /// Creates a refresh token for the specified user and tenant.
+    /// </summary>
+    /// <param name="userId">The ID of the user.</param>
+    /// <param name="tenantId">The ID of the tenant.</param>
+    /// <param name="tenantRole">The role of the user in the tenant.</param>
+    /// <param name="jti">The JWT ID.</param>
+    /// <param name="family">The family ID.</param>
+    /// <returns>The raw refresh token.</returns>
+    private async Task<string> CreateRefreshTokenAsync(Guid userId, Guid tenantId, string tenantRole, string jti, string family)
+    {
+        _ = Enum.TryParse<TenantRole>(tenantRole, out TenantRole parsedRole);
+        var raw = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        this.db.RefreshTokens.Add(new RefreshToken
+        {
+            UserId = userId,
+            TenantId = tenantId,
+            Role = parsedRole,
+            JwtId = jti,
+            Family = family,
+            TokenHash = Sha256(raw),
+            CreatedAtUtc = DateTime.UtcNow,
+            ExpiresAtUtc = DateTime.UtcNow.AddDays(this.opt.RefreshTokenDays),
+        });
+
+        await this.db.SaveChangesAsync();
+        return raw;
+    }
+
+    /// <summary>
+    /// Creates an access token for the specified user and tenant.
+    /// </summary>
+    /// <param name="userId">The ID of the user.</param>
+    /// <param name="tenantId">The ID of the tenant.</param>
+    /// <param name="requestedRole">The role requested by the user.</param>
+    /// <param name="email">The email of the user.</param>
+    /// <param name="sid">The session ID.</param>
+    /// <returns>A tuple containing the access token, expiration time, JWT ID, and family ID.</returns>
+    private async Task<(string access, DateTime exp, string jti, string family)> CreateAccessTokenAsync(Guid userId, Guid tenantId, string requestedRole, string email, string sid)
+    {
+        var now = DateTime.UtcNow;
+        var exp = now.AddMinutes(this.opt.AccessTokenMinutes);
+        var jti = Guid.NewGuid().ToString("N");
+        var family = Guid.NewGuid().ToString("N");
+
+        var user = await this.db.Users.AsNoTracking().FirstAsync(u => u.Id == userId);
+        var securityStamp = user.SecurityStamp ?? string.Empty;
+
+        var claims = new[]
+        {
+          new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+          new Claim(JwtRegisteredClaimNames.Jti, jti),
+          new Claim(JwtRegisteredClaimNames.Iat, ((DateTimeOffset)now).ToUnixTimeSeconds().ToString(System.Globalization.CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
+          new Claim(JwtRegisteredClaimNames.Email, email),
+          new Claim("tid", tenantId.ToString()),
+          new Claim("trole", requestedRole),
+          new Claim("sid", sid ?? Guid.NewGuid().ToString("N")),
+          new Claim("ver", securityStamp),
+        };
+
+        var signing = await this.keys.GetSigningCredentialsAsync();
+        var jwt = new JwtSecurityToken(this.opt.Issuer, this.opt.Audience, claims, notBefore: now, expires: exp, signingCredentials: signing);
+        var token = this.handler.WriteToken(jwt);
+        return (token, exp, jti, family);
+    }
+
+    /// <summary>
+    /// Computes the SHA-256 hash of the specified string.
+    /// </summary>
+    /// <param name="s">The input string.</param>
+    /// <returns>The SHA-256 hash as a hexadecimal string.</returns>
+    private static string Sha256(string s) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(s)));
 }
