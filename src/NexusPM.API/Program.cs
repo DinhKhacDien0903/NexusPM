@@ -7,9 +7,9 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using NexusPM.API.Authorization;
 using NexusPM.API.Middlewares;
-using NexusPM.Domain.Entities;
 using NexusPM.Domain.Enums;
 using NexusPM.Infrastructure;
+using NexusPM.Infrastructure.Identity.Configurations;
 using NexusPM.Infrastructure.Identity.Interceptors;
 using NexusPM.Infrastructure.Identity.Services.KeyMaterial;
 
@@ -37,11 +37,7 @@ public class Program
 
         builder.Services.AddAPIService();
 
-        Env.Load();
-
-        var app = builder.Build();
-
-        builder.Services.AddIdentityCore<AppUser>(o =>
+        builder.Services.AddIdentityCore<ApplicationUser>(o =>
         {
             o.Password.RequiredLength = 8;
             o.Password.RequireDigit = true;
@@ -54,7 +50,7 @@ public class Program
             o.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
         })
             .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
-            .AddSignInManager<SignInManager<AppUser>>()
+            .AddSignInManager<SignInManager<ApplicationUser>>()
             .AddDefaultTokenProviders();
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -90,6 +86,10 @@ public class Program
             .AddPolicy("TenantBilling", p => p.Requirements.Add(new TenantRoleRequirement(TenantRole.Billing)));
 
         builder.Services.AddHttpContextAccessor();
+
+        Env.Load();
+
+        var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
         {

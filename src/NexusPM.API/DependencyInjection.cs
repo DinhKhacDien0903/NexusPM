@@ -22,7 +22,7 @@ public static class DependencyInjection
 
         services.AddScoped<ICurrentUser, CurrentUser>();
 
-        services.AddSingleton<IAuthorizationHandler, TenantRoleHandler>();
+        services.AddScoped<IAuthorizationHandler, TenantRoleHandler>();
 
         return services;
     }
