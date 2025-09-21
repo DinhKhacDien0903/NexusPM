@@ -8,13 +8,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NexusPM.Application.Abstractions;
 using NexusPM.Application.Abstractions.Security;
+using NexusPM.Application.Common.Interfaces;
 using NexusPM.Infrastructure.Data.Auth;
 using NexusPM.Infrastructure.Data.Interceptors;
 using NexusPM.Infrastructure.Data.Tenancy;
 using NexusPM.Infrastructure.Identity.Configurations;
 using NexusPM.Infrastructure.Identity.Interceptors;
-using NexusPM.Infrastructure.Identity.Services.KeyMaterial;
 using NexusPM.Infrastructure.Identity.Services;
+using NexusPM.Infrastructure.Identity.Services.KeyMaterial;
 
 /// <summary>
 /// Provides extension methods for configuring infrastructure services.
@@ -43,6 +44,10 @@ public static class DependencyInjection
 
         services.AddIdentityCore<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+
+        services.AddScoped<INexusDbContext, NexusDbContext>();
+
+        services.AddScoped<IApplicationIdentityDbContext, ApplicationIdentityDbContext>();
 
         services.AddScoped<RequestTenantContext>();
 

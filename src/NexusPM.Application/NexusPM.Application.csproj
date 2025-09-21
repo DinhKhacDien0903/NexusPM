@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Commands\**" />
+    <EmbeddedResource Remove="Features\Commands\**" />
+    <None Remove="Features\Commands\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Remove="E:\NexusPM\stylecop.json" />
   </ItemGroup>
 
@@ -24,11 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Behaviours\" />
-    <Folder Include="Common\Exceptions\" />
     <Folder Include="Common\Mappings\" />
     <Folder Include="Common\Models\" />
-    <Folder Include="Features\Commands\" />
     <Folder Include="Features\EventHandlers\" />
     <Folder Include="Features\Queries\" />
   </ItemGroup>

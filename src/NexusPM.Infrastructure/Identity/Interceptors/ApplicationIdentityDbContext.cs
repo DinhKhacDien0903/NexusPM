@@ -6,14 +6,14 @@ namespace NexusPM.Infrastructure.Identity.Interceptors;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NexusPM.Application.Common.Interfaces;
 using NexusPM.Infrastructure.Identity.Configurations;
-using System.Reflection.Emit;
 using System.Reflection;
 
 /// <summary>
 /// Database context for ASP.NET Core Identity, managing users and roles for authentication and authorization.
 /// </summary>
-public class ApplicationIdentityDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+public class ApplicationIdentityDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IApplicationIdentityDbContext
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="ApplicationIdentityDbContext"/> class.

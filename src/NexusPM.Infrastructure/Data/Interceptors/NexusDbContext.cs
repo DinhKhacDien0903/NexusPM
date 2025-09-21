@@ -4,6 +4,7 @@
 
 namespace NexusPM.Infrastructure.Data.Interceptors;
 
+using NexusPM.Application.Common.Interfaces;
 using System.Reflection;
 
 /// <summary>
@@ -12,7 +13,7 @@ using System.Reflection;
 /// <param name="options">The database context options.</param>
 /// <param name="tenantProvider">The tenant provider for multi-tenant support.</param>
 public class NexusDbContext(DbContextOptions<NexusDbContext> options, ITenantProvider tenantProvider)
-    : DbContext(options)
+    : DbContext(options), INexusDbContext
 {
     private readonly ITenantProvider tenantProvider = tenantProvider;
 

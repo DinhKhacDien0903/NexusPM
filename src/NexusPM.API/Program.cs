@@ -1,7 +1,7 @@
 // Copyright (c) YourCompany. All rights reserved.
 
-using DotNetEnv;
-using NexusPM.API.Middlewares;
+using NexusPM.API.Common.Exceptions;
+using NexusPM.Application;
 using NexusPM.Infrastructure;
 
 namespace NexusPM.API;
@@ -22,7 +22,13 @@ public class Program
 
         builder.Services.AddControllers();
 
+        builder.Services.AddEndpointsApiExplorer();
+
+        builder.Services.AddSwagerGenDocumentation();
+
         builder.Services.AddOpenApi();
+
+        builder.Services.AddApplication();
 
         builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -32,13 +38,22 @@ public class Program
 
         builder.Services.AddHttpContextAccessor();
 
-        Env.Load();
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+        builder.Services.AddProblemDetails();
 
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                options.RoutePrefix = string.Empty;
+            });
+            app.UseDeveloperExceptionPage();
         }
 
         app.UseHttpsRedirection();
@@ -47,11 +62,11 @@ public class Program
 
         app.UseAuthorization();
 
-        app.UseMiddleware<MissingTenantMiddleware>();
+        //app.UseMiddleware<MissingTenantMiddleware>();
 
         app.MapControllers();
 
-        app.MapGet("/health", () => Results.Ok("OK"));
+        app.UseExceptionHandler();
 
         await app.RunAsync();
     }

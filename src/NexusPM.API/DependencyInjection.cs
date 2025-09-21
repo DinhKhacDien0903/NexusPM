@@ -1,9 +1,11 @@
 ﻿// Copyright (c) YourCompany. All rights reserved.
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NexusPM.API.Authorization;
 using NexusPM.Application.Abstractions.Security;
 using NexusPM.Domain.Enums;
@@ -90,6 +92,35 @@ public static class DependencyInjection
             .AddPolicy("TenantAdmin", p => p.Requirements.Add(new TenantRoleRequirement(TenantRole.Admin)))
             .AddPolicy("TenantMember", p => p.Requirements.Add(new TenantRoleRequirement(TenantRole.Member)))
             .AddPolicy("TenantBilling", p => p.Requirements.Add(new TenantRoleRequirement(TenantRole.Billing)));
+
+        return services;
+    }
+
+    /// <summary>
+    /// Adds Swagger documentation generation services to the specified <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The service collection to which the Swagger documentation services will be added.</param>
+    /// <returns>The updated service collection.</returns>
+    public static IServiceCollection AddSwagerGenDocumentation(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "v1",
+                Title = "NEXUSPM API",
+                Description = "An ASP.NET Core Web API for managing Task and Team of Project",
+                TermsOfService = new Uri("https://example.com/terms"),
+                Contact = new OpenApiContact
+                {
+                    Name = "Dinh Khac Dien",
+                    Url = new Uri("https://www.facebook.com/dien.dinh.336333"),
+                },
+            });
+
+            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+        });
 
         return services;
     }
