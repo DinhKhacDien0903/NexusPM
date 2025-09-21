@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NexusPM.Application.Common.Exceptions;
 using NexusPM.Application.Common.Interfaces;
+using NexusPM.Domain.Events;
 
 namespace NexusPM.Application.Features.Commands;
 
@@ -43,6 +44,7 @@ public class SignupUserCommandHandler(INexusDbContext nexusDb)
             DisplayName = request.Displayname,
         };
 
+        newUser.AddDomainEvent(new SignedUpEvent(newUser));
         nexusDb.Users.Add(newUser);
         await nexusDb.SaveChangesAsync(cancellationToken);
 

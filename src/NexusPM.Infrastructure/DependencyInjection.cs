@@ -7,6 +7,7 @@ namespace NexusPM.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NexusPM.Application.Abstractions;
+using NexusPM.Application.Abstractions.Notifications;
 using NexusPM.Application.Abstractions.Security;
 using NexusPM.Application.Common.Interfaces;
 using NexusPM.Infrastructure.Data.Auth;
@@ -16,6 +17,7 @@ using NexusPM.Infrastructure.Identity.Configurations;
 using NexusPM.Infrastructure.Identity.Interceptors;
 using NexusPM.Infrastructure.Identity.Services;
 using NexusPM.Infrastructure.Identity.Services.KeyMaterial;
+using NexusPM.Infrastructure.Notifications.Email;
 
 /// <summary>
 /// Provides extension methods for configuring infrastructure services.
@@ -61,6 +63,12 @@ public static class DependencyInjection
 
         services.AddScoped<IUserTenantReader, EfUserTenantReader>();
 
+        services.AddSingleton<IKeyMaterialProvider, InMemoryRsaKeyMaterialProvider>();
+
+        services.AddScoped<ITokenService, TokenService>();
+
+        services.AddScoped<IEmailSender, SmtpEmailOTPSender>();
+
         services.AddOptions<JwtOptions>()
             .Configure<IConfiguration>((opt, cfg) =>
             {
@@ -71,9 +79,21 @@ public static class DependencyInjection
                 "Provide PrivateKeyPem")
             .ValidateOnStart();
 
-        services.AddSingleton<IKeyMaterialProvider, InMemoryRsaKeyMaterialProvider>();
-
-        services.AddScoped<ITokenService, TokenService>();
+        services.AddOptions<SmtpOptions>()
+            .Configure<IConfiguration>((opt, cfg) =>
+            {
+                cfg.GetSection("Smtp").Bind(opt);
+            })
+            .Validate(
+                o => !string.IsNullOrWhiteSpace(o.Host),
+                "SMTP Host is required")
+            .Validate(
+                o => !string.IsNullOrWhiteSpace(o.User),
+                "SMTP User is required")
+            .Validate(
+                o => !string.IsNullOrWhiteSpace(o.Password),
+                "SMTP Password is required")
+            .ValidateOnStart();
 
         return services;
     }

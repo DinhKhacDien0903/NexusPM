@@ -8,8 +8,14 @@
 
   <ItemGroup>
     <Compile Remove="Features\Commands\**" />
+    <Compile Remove="Features\EventHandlers\**" />
+    <Compile Remove="Features\Queries\**" />
     <EmbeddedResource Remove="Features\Commands\**" />
+    <EmbeddedResource Remove="Features\EventHandlers\**" />
+    <EmbeddedResource Remove="Features\Queries\**" />
     <None Remove="Features\Commands\**" />
+    <None Remove="Features\EventHandlers\**" />
+    <None Remove="Features\Queries\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,8 +38,6 @@
   <ItemGroup>
     <Folder Include="Common\Mappings\" />
     <Folder Include="Common\Models\" />
-    <Folder Include="Features\EventHandlers\" />
-    <Folder Include="Features\Queries\" />
   </ItemGroup>
   
 </Project>

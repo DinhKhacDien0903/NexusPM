@@ -7,7 +7,7 @@ namespace NexusPM.Domain.Common;
 /// <summary>
 /// Represents an entity that includes audit information such as creation and update timestamps, user IDs, and a deletion flag.
 /// </summary>
-public class AuditableEntity
+public class AuditableEntity : BaseEntity
 {
     /// <summary>
     /// Gets or sets the unique identifier for the entity.
